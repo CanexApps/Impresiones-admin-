@@ -1933,6 +1933,11 @@
 
             clienteRemitente.credito = Math.max(0, (clienteRemitente.credito || 0) - (pedido.monto || 0));
             clienteRemitente.totalTransferidoHistorico = (clienteRemitente.totalTransferidoHistorico || 0) + (pedido.monto || 0);
+            // Deja habilitado para transferencias automáticas SOLO al
+            // dispositivo (teléfono) desde el que se envió esta solicitud.
+            if (pedido.tokenDispositivoRemitente) {
+                clienteRemitente.dispositivoTransferenciaVerificado = pedido.tokenDispositivoRemitente;
+            }
             registrarHistorialCredito(clienteRemitente, -(pedido.monto || 0), `Transferencia enviada a ${pedido.clienteDestino} (${pedido.telefonoDestino}) — aprobada`);
 
             clienteDestino.credito = (clienteDestino.credito || 0) + (pedido.monto || 0);
